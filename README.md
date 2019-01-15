@@ -10,14 +10,14 @@
 * 注销
 * ……
 
-# 重要说明
+# 三、重要说明
 * 程序内使用了`带过期功能的map`和`list`分别模拟的 redis 和 mysql。实际上，可使用spring data、jpa等模块，编码对接 redis 和 mysql！
 
 * token存储方面，提供了抽象接口和简单工厂，便于拓展其他存储引擎
 
 * 注意程序中TODO标记的地方，表示由于是demo级别的原因，故意做的**适配**！
 
-# 三、食用指南
+# 四、食用指南
 ### 打包
 * 安装在本地仓库：拉下项目，执行`mvn install`
 * 部署到私服：修改pom.xml的`distributionManagement`节点，另外需配置maven的setting.xml，以便连接到私服，执行`mvn deploy`
@@ -31,8 +31,8 @@
 </dependency>
 ```
 
-### 示例
-#### 配置文件
+### 使用示例
+1、配置文件
 ```
 jwt.security.permit-urls=/,/auth/login,/home,/**.ico
 # 目前支持的存储有：redis、mysql
@@ -45,7 +45,7 @@ spring.thymeleaf.cache=false
 * 配置了token存储引擎为 redis
 * 配置了token失效时间
 
-#### 开启认证、授权示例
+2、开启认证、授权示例
 ```java
 @EnableJwtSecurity @SpringBootApplication public class DemoApplication {
     public static void main(String[] args) {
@@ -54,14 +54,14 @@ spring.thymeleaf.cache=false
 }
 ```
 ```java
-    /**
-     * 创建用户
-     * @return
-     */
-    @RequireAuthority("account_users_create")
-    @PostMapping("/create") public String postCreate() {
-        return "admin/create_user_success";
-    }
+/**
+ * 创建用户
+ * @return
+ */
+@RequireAuthority("account_users_create")
+@PostMapping("/create") public String postCreate() {
+    return "admin/create_user_success";
+}
 ```
 
 ### 附录
