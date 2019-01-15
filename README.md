@@ -1,7 +1,7 @@
-# 基本介绍
+# 一、基本介绍
 基于Spring Security实现的JWT认证的SpringBoot Starter包
 
-# 基本功能
+# 二、基本功能
 该项目实现一个简单的**权限认证Demo**，功能包含：
 * 注解来是否开启认证`@EnableJwtSecurity`
 * 注解来开启某个方法是否需要验证指定权限`@RequireAuthority("account_users_create")`
@@ -17,7 +17,7 @@
 
 * 注意程序中TODO标记的地方，表示由于是demo级别的原因，故意做的**适配**！
 
-# 食用指南
+# 三、食用指南
 ### 打包
 * 安装在本地仓库：拉下项目，执行`mvn install`
 * 部署到私服：修改pom.xml的`distributionManagement`节点，另外需配置maven的setting.xml，以便连接到私服，执行`mvn deploy`
@@ -29,6 +29,39 @@
 	<artifactId>jwt-security-spring-boot-starter</artifactId>
 	<version>${jwt.security.version}</version>
 </dependency>
+```
+
+### 示例
+#### 配置文件
+```
+jwt.security.permit-urls=/,/auth/login,/home,/**.ico
+# 目前支持的存储有：redis、mysql
+jwt.security.db=redis
+# 单位毫秒，当jwt.security.db=redis才有效
+jwt.security.redis.keepAlive=60000
+spring.thymeleaf.cache=false
+```
+* 配置了路由白名单，以上白名单访问不需要认证
+* 配置了token存储引擎为 redis
+* 配置了token失效时间
+
+#### 开启认证、授权示例
+```java
+@EnableJwtSecurity @SpringBootApplication public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+```java
+    /**
+     * 创建用户
+     * @return
+     */
+    @RequireAuthority("account_users_create")
+    @PostMapping("/create") public String postCreate() {
+        return "admin/create_user_success";
+    }
 ```
 
 ### 附录
